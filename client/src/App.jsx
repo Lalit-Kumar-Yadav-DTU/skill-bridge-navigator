@@ -53,15 +53,34 @@ function App() {
         </div>
 
         <div>
-          <h3>2. Paste Resume Content</h3>
-          <textarea 
-            rows="8" 
-            style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ccc' }} 
-            placeholder="Paste your professional experience here..."
-            value={resumeText}
-            onChange={(e) => setResumeText(e.target.value)}
-          ></textarea>
-        </div>
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <h3>2. Paste Your Resume</h3>
+    <span style={{ fontSize: '12px', color: '#888' }}>
+      {resumeText.split(/\s+/).filter(w => w).length} words
+    </span>
+  </div>
+    <textarea 
+      rows="10" 
+      style={{ 
+        width: '100%', 
+        padding: '15px', 
+        borderRadius: '8px', 
+        border: '1px solid #ddd',
+        fontSize: '14px',
+        lineHeight: '1.5',
+        fontFamily: 'monospace'
+      }} 
+      placeholder="Select a role above, then paste your resume text here..."
+      value={resumeText}
+      onChange={(e) => setResumeText(e.target.value)}
+    ></textarea>
+    <button 
+      onClick={() => setResumeText('')} 
+      style={{ background: 'none', border: 'none', color: '#0052cc', cursor: 'pointer', fontSize: '12px', marginTop: '5px' }}
+    >
+      Clear Text
+    </button>
+  </div>
 
         <button 
           onClick={handleAnalyze} 

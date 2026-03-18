@@ -1,14 +1,27 @@
 [
   {
     "id": "1",
-    "role": "Cloud Security Engineer",
-    "required_skills": ["Python", "AWS", "Terraform", "Docker"],
-    "description": "Protect cloud infrastructure using modern DevOps tools."
+    "role": "Frontend Developer (React)",
+    "required_skills": ["React", "JavaScript", "CSS3", "Tailwind CSS", "Redux", "TypeScript"]
   },
   {
     "id": "2",
-    "role": "Full Stack Developer",
-    "required_skills": ["React", "Node.js", "MongoDB", "TypeScript"],
-    "description": "Build scalable web applications using the MERN stack."
+    "role": "Backend Engineer (Node.js)",
+    "required_skills": ["Node.js", "Express", "MongoDB", "REST APIs", "SQL", "Redis"]
+  },
+  {
+    "id": "3",
+    "role": "Full Stack Developer (MERN)",
+    "required_skills": ["MongoDB", "Express", "React", "Node.js", "TypeScript", "AWS"]
+  },
+  {
+    "id": "4",
+    "role": "DevOps Engineer",
+    "required_skills": ["Docker", "Kubernetes", "Jenkins", "AWS", "Terraform", "Linux"]
+  },
+  {
+    "id": "5",
+    "role": "Data Scientist",
+    "required_skills": ["Python", "Pandas", "Scikit-Learn", "SQL", "Tableau", "Machine Learning"]
   }
 ]
