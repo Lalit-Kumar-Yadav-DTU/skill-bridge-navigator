@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -8,8 +8,8 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Load jobs on startup (Requirement: View/Search)
   useEffect(() => {
+    // Updated to use the 5000 port for your Node backend
     axios.get('http://localhost:5000/api/jobs')
       .then(res => setJobs(res.data))
       .catch(err => console.error("Error fetching jobs", err));
@@ -31,22 +31,17 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'sans-serif', maxWidth: '800px', margin: 'auto' }}>
+    <div style={{ padding: '40px', fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: 'auto' }}>
       <h1>🚀 Skill-Bridge Career Navigator</h1>
       <p>Palo Alto Networks Case Study | Candidate: Lalit Kumar Yadav</p>
-      
       <hr />
-
-      {/* Step 1: Select Job */}
-      <section>
+      <section style={{ marginTop: '20px' }}>
         <h3>1. Select Your Target Role</h3>
         <select onChange={(e) => setSelectedJob(e.target.value)} value={selectedJob} style={{ width: '100%', padding: '10px' }}>
           <option value="">-- Choose a Role --</option>
           {jobs.map(job => <option key={job.id} value={job.id}>{job.role}</option>)}
         </select>
       </section>
-
-      {/* Step 2: Input Resume (Requirement: Create/Input) */}
       <section style={{ marginTop: '20px' }}>
         <h3>2. Paste Your Resume (Text)</h3>
         <textarea 
@@ -57,7 +52,6 @@ function App() {
           onChange={(e) => setResumeText(e.target.value)}
         ></textarea>
       </section>
-
       <button 
         onClick={handleAnalyze} 
         disabled={loading || !selectedJob || !resumeText}
@@ -65,32 +59,23 @@ function App() {
       >
         {loading ? "Analyzing..." : "Analyze Skills Gap"}
       </button>
-
-      {/* Result Dashboard (Requirement: View + AI Feature) */}
       {result && (
-        <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f4f7f6', borderRadius: '10px' }}>
+        <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f4f7f6', borderRadius: '10px', color: '#333' }}>
           <h2>Analysis Results ({result.analysisMethod})</h2>
           <div style={{ fontSize: '24px', fontWeight: 'bold' }}>Match Score: {result.matchScore}%</div>
-          
           <h3>Missing Skills:</h3>
-          <ul>
-            {result.missingSkills.map((skill, index) => (
-              <li key={index}>{skill}</li>
-            ))}
-          </ul>
-
+          <ul>{result.missingSkills.map((s, i) => <li key={i}>{s}</li>)}</ul>
           <h3>Your Personalized Roadmap:</h3>
-          {result.roadmap.map((step, index) => (
-            <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-              <input type="checkbox" id={`step-${index}`} style={{ marginRight: '10px' }} />
-              <label htmlFor={`step-${index}`}>{step}</label>
+          {result.roadmap.map((step, i) => (
+            <div key={i} style={{ marginBottom: '10px' }}>
+              <input type="checkbox" id={`step-${i}`} style={{ marginRight: '10px' }} />
+              <label htmlFor={`step-${i}`}>{step}</label>
             </div>
           ))}
-          <p><i>Note: Checklist above allows you to track progress (Requirement: Update)</i></p>
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
