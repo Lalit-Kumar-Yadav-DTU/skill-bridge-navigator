@@ -1,58 +1,70 @@
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { OpenAI } = require('openai');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 const jobsPath = path.join(__dirname, 'data', 'jobs.json');
 const jobsData = JSON.parse(fs.readFileSync(jobsPath, 'utf8'));
 
-// 1. Rule-Based Fallback Function (Mandatory Requirement)
-const runManualFallback = (resumeText, requiredSkills) => {
-  console.log("⚠️ AI Service Unavailable. Running Rule-Based Fallback...");
-  const missing = requiredSkills.filter(
-    skill => !resumeText.toLowerCase().includes(skill.toLowerCase())
-  );
-  return {
-    matchScore: Math.max(0, 100 - (missing.length * 20)),
-    missingSkills: missing,
-    roadmap: missing.map(s => `Review documentation for ${s}`),
-    method: "Manual Keyword Match (Fallback)"
-  };
-};
-
 app.post('/api/analyze', async (req, res) => {
-  const { resumeText, jobId } = req.body;
-  const selectedJob = jobsData.find(j => j.id === jobId);
+    console.log("📥 [SERVER] Received request for Job ID:", req.body.jobId);
+    
+    const { resumeText, jobId } = req.body;
+    const selectedJob = jobsData.find(j => j.id === jobId);
 
-  if (!selectedJob) return res.status(404).json({ error: "Job not found" });
+    if (!selectedJob) return res.status(404).json({ error: "Job not found" });
 
-  try {
-    // 2. Real AI Integration (Requirement: AI Capability)
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Cost-effective and fast
-      messages: [
-        { role: "system", content: "You are a career coach. Compare the resume to the job skills and return a JSON object with matchScore (0-100), missingSkills (array), and roadmap (array of steps)." },
-        { role: "user", content: `Job: ${selectedJob.role}. Requirements: ${selectedJob.required_skills.join(', ')}. Resume: ${resumeText}` }
-      ],
-      response_format: { type: "json_object" }
-    });
+    try {
+        console.log("🧠 [AI] Calling Gemini 2.5-Flash...");
 
-    const aiResult = JSON.parse(completion.choices[0].message.content);
-    res.json({ ...aiResult, method: "OpenAI GPT-4o Analysis" });
+        const prompt = `
+            Analyze this resume against the ${selectedJob.role} role. 
+            Required Skills: ${selectedJob.required_skills.join(', ')}.
+            Resume: ${resumeText}
+            Return ONLY a JSON object: {"matchScore": 85, "missingSkills": ["React"], "roadmap": ["Step 1"]}
+        `;
 
-  } catch (error) {
-    // 3. Graceful Fallback (Requirement: AI Fallback)
-    const fallbackResult = runManualFallback(resumeText, selectedJob.required_skills);
-    res.json(fallbackResult);
-  }
+        // UPDATE THIS LINE TO THE 2026 VERSION
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        
+        console.log("📄 [AI] Raw Response Received:", text);
+
+        // Remove any markdown formatting if Gemini adds it
+        const cleanJson = text.replace(/```json|```/g, "").trim();
+        const aiData = JSON.parse(cleanJson);
+
+        console.log("✅ [SUCCESS] Analysis Complete!");
+        res.json({ ...aiData, method: "Gemini 2.5 AI Analysis" });
+
+    } catch (error) {
+        console.error("❌ [ERROR] AI Step Failed:", error.message);
+        
+        // RESILIENT FALLBACK (Requirement: AI Fallback)
+        const fallbackSkills = selectedJob.required_skills.filter(
+            s => !resumeText.toLowerCase().includes(s.toLowerCase())
+        );
+
+        res.json({
+            matchScore: 50,
+            missingSkills: fallbackSkills,
+            roadmap: ["AI service temporarily offline. Please manually verify skills: " + fallbackSkills.join(", ")],
+            method: "Rule-Based Fallback (AI Offline)"
+        });
+    }
 });
 
 app.get('/api/jobs', (req, res) => res.json(jobsData));
