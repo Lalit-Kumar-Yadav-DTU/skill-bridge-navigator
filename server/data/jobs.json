@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "role": "Cloud Security Engineer",
+    "required_skills": ["Python", "AWS", "Terraform", "Docker"],
+    "description": "Protect cloud infrastructure using modern DevOps tools."
+  },
+  {
+    "id": "2",
+    "role": "Full Stack Developer",
+    "required_skills": ["React", "Node.js", "MongoDB", "TypeScript"],
+    "description": "Build scalable web applications using the MERN stack."
+  }
+]
