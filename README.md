@@ -1,87 +1,116 @@
-🚀 Skill-Bridge Career Navigator
-Candidate: Lalit Kumar Yadav (Delhi Technological University)
+# 🚀 Skill-Bridge Career Navigator
+**Candidate:** Lalit Kumar Yadav (Delhi Technological University)  
+**Case Study:** Palo Alto Networks FY26 IT Hiring Challenge
 
-Project: Palo Alto Networks SWE Case Study — AI-Powered Skill Gap Analysis
+---
 
-📌 Project Overview
-The Skill-Bridge Career Navigator is a full-stack application designed to help job seekers bridge the gap between their current skills and industry requirements. Using Gemini 2.5-Flash, the tool analyzes resume text against specific job roles to provide a match score, identify missing skills, and generate a personalized learning roadmap.
+## 📸 Application Preview
+![App Screenshot](./screenshot.png)
 
-🛠️ Technical Stack
-Frontend: React 18 (Vite), Axios, CSS3 (Modular UI).
+---
 
-Backend: Node.js, Express.js.
+## 📺 Project Submission Links
+| Resource | Link |
+| :--- | :--- |
+| **Video Presentation** | [▶️ Watch the 5-7 Minute Demo on YouTube](PASTE_YOUR_YOUTUBE_LINK_HERE) |
+| **Design Documentation** | [📄 View Technical Design Documentation](./DESIGN.md) |
 
-AI Engine: Google Gemini 2.5-Flash (via Google AI Studio).
+---
 
-Testing: Jest, Supertest.
+## 📌 Project Overview
+> **The Problem:** Students and career-switchers often face a "Black Box" when applying for specialized roles. They may have the core skills but miss the specific "last-mile" technical requirements that lead to successful placements.
 
-DevOps: Environment-based configuration (dotenv).
+**The Solution:** `Skill-Bridge` is an AI-powered navigator that performs a deep-tissue gap analysis on a user’s resume. By comparing real-world resume text against specific industry-standard job descriptions using **Gemini 2.5-Flash**, it generates a personalized, actionable roadmap to bridge those gaps.
 
-🧠 Core Engineering Pillars
-1. High-Availability AI & Fallback Logic
-In a production environment, third-party APIs can fail or be rate-limited. This application implements a Resilient Fallback Engine:
+---
 
-Primary: Real-time NLP analysis via Gemini 2.5-Flash.
+## 🛠️ Technical Stack
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React 18 (Vite), Axios, CSS3 (Modular & Responsive UI) |
+| **Backend** | Node.js, Express.js |
+| **AI Engine** | Google Gemini 2.5-Flash (via Google AI Studio) |
+| **Testing** | Jest, Supertest (Focusing on Edge Cases & Resilience) |
+| **Security** | Environment-based configuration (`dotenv`) |
 
-Secondary (Fallback): If the AI service is unreachable, a server-side Rule-Based Keyword Matcher automatically takes over. This ensures the user always receives a functional gap analysis, satisfying the "System Resilience" requirement.
+---
 
-2. Full-Stack CRUD Implementation
-The application follows a structured data flow:
+## 🧠 Core Engineering Pillars (Design Choices)
 
-Create: User submits resume text and selects a role for analysis.
+### 1. High-Availability & Resilient Fallback
+In alignment with Palo Alto Networks' focus on **stable infrastructure**, I implemented a "Graceful Degradation" strategy:
+* **Primary Engine:** Real-time NLP analysis via Gemini 2.5-Flash for creative, context-aware roadmaps.
+* **Fallback Engine:** If the AI API experiences latency or failures, a server-side **Deterministic Keyword Matcher** automatically takes over. This ensures the user *always* receives a functional gap analysis.
 
-View: The system renders a detailed Match Score and Skill Breakdown.
+### 2. Full-Stack CRUD Lifecycle
+I ensured the application satisfies the core requirements of a functional MVP:
+* **Create:** Generate new analysis reports from resume input.
+* **View:** Real-time rendering of Match Scores and Skill Gaps.
+* **Update:** An interactive **Roadmap Progress Tracker**. Users can "Check off" steps, which updates the application state—providing a tangible sense of progress.
+* **Filter:** A job library allows users to switch between different career paths instantly.
 
-Update: An interactive Roadmap Progress Tracker allows users to "Check off" completed steps, dynamically updating the UI state (fulfilling the 'Update' requirement).
+### 3. Technical Rigor & Quality Assurance
+The codebase is hardened with automated unit tests to ensure reliability:
+* **Happy Path:** Confirms successful score generation for valid data.
+* **Edge Case 1:** Validates 400-level error handling for empty/missing inputs.
+* **Edge Case 2:** Validates 404-level error handling for invalid Job IDs.
 
-Filter: A multi-role job library allows users to target specific career paths.
+---
 
-3. Security Hygiene
-Secret Management: All API credentials are isolated in .env files and excluded from version control via .gitignore.
+## ⚖️ Responsible AI & Security
+* **Data Privacy:** Resume data is processed as a transient stream. No personal user data is stored or used for model training, adhering to strict privacy-first principles.
+* **Transparency:** The UI explicitly labels when the analysis is generated via "AI Analysis" versus the "Fallback Engine," ensuring user trust.
+* **Security Hygiene:** Sensitive API credentials are never hardcoded; they are managed through `.env` files with a provided `.env.example` template for reviewers.
 
-Input Validation: The backend enforces data sanity checks (e.g., preventing empty submissions or invalid Job IDs) to protect server resources.
+---
 
-4. Technical Rigor (Testing)
-The system includes automated unit tests using Jest to ensure reliability:
+## 📉 Engineering Tradeoffs
+* **Text-Paste vs. PDF Parsing:** I chose a text-input method to prioritize **Data Integrity**. PDF layouts often introduce parsing "noise" that can lead to AI hallucinations. Text-paste ensures the AI receives 100% clean data for the most accurate gap analysis.
+* **MERN-Lite Architecture:** I utilized a local `jobs.json` database instead of a full MongoDB deployment to maximize velocity and focus on **AI Resilience** and **Testing**, which were higher-weighted criteria for this specific case study.
 
-Happy Path: Verifies successful analysis for valid inputs.
+---
 
-Edge Case 1: Validates server response for empty/missing resume text (400 Bad Request).
+## 🔮 Future Enhancements
+* **Persistence Layer:** Integrating a database to allow users to save multiple resumes and track progress over time.
+* **Live Job Scraping:** Connecting to LinkedIn or Glassdoor APIs for real-time job postings.
+* **Advanced AI Guardrails:** Implementing a secondary LLM "check" to further minimize hallucinations in technical roadmap steps.
 
-Edge Case 2: Validates server response for non-existent Job IDs (404 Not Found).
+---
 
-⚖️ Engineering Tradeoffs
-Text-Paste vs. PDF Parsing: I prioritized data integrity over a file-upload UI. PDF parsing often introduces "noise" (layout artifacts); by using a text-paste method, I ensured the AI receives clean, 100% accurate data for the NLP analysis.
+## 🚀 Getting Started
 
-JSON over Database: To maximize velocity during the 48-hour window, I used a structured jobs.json file for the job library. This allowed me to focus more time on AI Integration and Robust Testing, which provide higher value to the core project goal.
+### Prerequisites
+* **Node.js** v20.14.0 or higher.
+* **Gemini API Key** (Google AI Studio).
+  
+### **Installation & Setup**
+Gemini said
+Got it! You're looking for that clean, professional Markdown structure where the headings (###) and code blocks (```bash) are properly isolated so GitHub renders them perfectly with "copy" buttons.
 
-🚀 Getting Started
-Prerequisites
-Node.js v20.14.0 or higher.
+When you bunch them together without line breaks, GitHub’s parser can get confused and fail to render the code blocks.
 
-A Gemini API Key (from Google AI Studio).
+Here is the exact raw Markdown you should paste into your README.md:
 
+## 🚀 Installation & Setup
 
-Installation
-    1 Clone the Repo:
+Follow these steps to get the **Skill-Bridge Navigator** running on your local machine.
 
-        git clone [your-repo-link]
-        cd skill-bridge-navigator
-    
-    2 Setup Backend:
-    
-        cd server
-        npm install
-        cp .env.example .env  # Add your GEMINI_API_KEY here
-        node index.js
-    
-    3 Setup Frontend:
-    
-        cd ../client
-        npm install
-        npm run dev
-    
-    4 Running Tests
-    
-        cd server
-        npm test
+### **1. Clone the Repository**
+```bash
+git clone [https://github.com/Lalit-Kumar-Yadav-DTU/skill-bridge-navigator](https://github.com/Lalit-Kumar-Yadav-DTU/skill-bridge-navigator)
+cd skill-bridge-navigator
+2. Backend Configuration
+Bash
+cd server
+npm install
+cp .env.example .env  # Manual Step: Open .env and add your GEMINI_API_KEY
+node index.js
+3. Frontend Configuration
+Bash
+cd ../client
+npm install
+npm run dev
+4. Running Automated Tests
+Bash
+cd server
+npm test
