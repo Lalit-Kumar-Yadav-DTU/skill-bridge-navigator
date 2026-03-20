@@ -12,8 +12,8 @@
 ## 📺 Project Submission Links
 | Resource | Link |
 | :--- | :--- |
-| **Video Presentation** | [▶️ Watch the 5-7 Minute Demo on YouTube](PASTE_YOUR_YOUTUBE_LINK_HERE) |
-| **Design Documentation** | [📄 View Technical Design Documentation](./DESIGN.md) |
+| **Video Presentation** | [▶️ Watch the 5-7 Minute Demo on YouTube](https://youtu.be/vcE9YYhnV5U) |
+| **Design Documentation** | [📄 View Technical Design Documentation](./README.md) |
 
 ---
 
